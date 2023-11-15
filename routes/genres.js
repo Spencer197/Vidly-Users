@@ -1,5 +1,5 @@
-const auth = require('../middleware/auth');
-const admin = require('../middleware/admin');
+const auth = require('../middleware/auth');//Loads auth module from middleware folder one level up
+const admin = require('../middleware/admin');//Loads admin module from middleware folder one level up
 const {Genre, validate} = require('../models/genre');
 const mongoose = require('mongoose');
 const express = require('express');
@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
   res.send(genres);
 });
 
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, async (req, res) => {//'auth' middleware function executed before route handler
   const { error } = validate(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -33,7 +33,7 @@ router.put('/:id', async (req, res) => {
   res.send(genre);
 });
 
-router.delete('/:id', [auth, admin], async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {//If user authentic & admin -> route handler executed
   const genre = await Genre.findByIdAndRemove(req.params.id);
 
   if (!genre) return res.status(404).send('The genre with the given ID was not found.');

@@ -1,4 +1,4 @@
-const auth = require('../middleware/auth');
+const auth = require('../middleware/auth');//Loads auth module from middleware folder one level up
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const bcrypt = require('bcrypt');
@@ -8,8 +8,8 @@ const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 
-router.get('/me', auth, async (req, res) => {
-  const user = await User.findById(req.user._id).select('-password');
+router.get('/me', auth, async (req, res) => {//'auth' middleware function executed before route handler
+  const user = await User.findById(req.user._id).select('-password');//.select excludes password from returned data
   res.send(user);
 });
 
